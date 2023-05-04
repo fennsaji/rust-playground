@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-pub fn count(text: &str) {
+pub fn count(text: &str) -> HashMap<char, i32> {
     let mut freq = HashMap::new();
     for c in text.chars() {
         // *freq.entry(c).or_insert(0) += 1;
@@ -13,5 +13,5 @@ pub fn count(text: &str) {
             }
         }
     }
-    println!("{:?}", freq);
+    freq
 }
