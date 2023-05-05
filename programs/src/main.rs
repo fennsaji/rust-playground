@@ -2,6 +2,7 @@ use std::io::{self, Write};
 
 mod count_chars;
 mod palindrome;
+mod fibonacci;
 
 fn main() {
     let mut text = String::new();
@@ -17,4 +18,8 @@ fn main() {
 
     let is_palindrome = palindrome::palindrome(&text);
     println!("Is {} Palindrome? {}", text, is_palindrome);
+
+    let number = 20;
+    let fib_series = fibonacci::fibonacci(number);
+    println!("{:?}", fib_series);
 }
