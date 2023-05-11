@@ -1,3 +1,3 @@
-# rust_playgorund
+# rust_playground
 
 Repo to practise Rust
