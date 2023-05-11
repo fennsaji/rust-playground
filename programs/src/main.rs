@@ -1,19 +1,24 @@
-use std::io::{self, Write};
+// use std::io::{self, Write};
+
 
 mod count_chars;
 mod palindrome;
 mod fibonacci;
 mod sum_of_digits;
 mod binary_seach;
+mod sock_merchant;
+
+use sock_merchant::find_pairs;
 
 fn main() {
-    let mut text = String::new();
+    // let text = String::new();
+    // print!("Enter some text: ");
+    // io::stdout().flush().unwrap();
+    // io::stdin().read_line(&mut text).unwrap();
+    // let text = text.trim();
+    // println!("You entered: {}", text);
 
-    print!("Enter some text: ");
-    io::stdout().flush().unwrap();
-    io::stdin().read_line(&mut text).unwrap();
-    let text = text.trim();
-    println!("You entered: {}", text);
+    let text = "TEET".to_owned();
 
     let freq = count_chars::count(&text);
     print!("Character Count: {:?} \n", freq);
@@ -32,6 +37,9 @@ fn main() {
     let arr = [0, 2, 4, 6, 8, 10, 13, 15, 18, 20];
     let target = 20;
     let index = binary_seach::search(&arr, target);
-    println!("Found at {:?}", index);
+    println!("Element Found at {:?}", index);
 
+    let arr = [1, 2, 1, 0, 2, 3, 4, 2, 1, 2];
+    let pairs = find_pairs(&arr);
+    println!("Sock Pairs Found: {}", pairs);
 }
