@@ -7,6 +7,7 @@ mod fibonacci;
 mod sum_of_digits;
 mod binary_seach;
 mod sock_merchant;
+mod sort;
 
 use sock_merchant::find_pairs;
 
