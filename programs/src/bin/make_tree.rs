@@ -94,6 +94,19 @@ fn build_transaction_tree(transactions: Vec<Transaction>) -> (TxHash, Transactio
     (root_node, transaction_map)
 }
 
+fn iterate_transactions_tree(root_node: TxHash, transaction_tree: TransactionsMap) {
+    let next_node_hash = root_node;
+    let transaction = transaction_tree.get(&next_node_hash);
+    if let Some(transaction) = transaction {
+        // Validate Data
+        println!("Validating Data: {}", transaction.current_key());
+        println!("{}", transaction.amount);
+        for tx in transaction.children.clone().into_iter() {
+            iterate_transactions_tree(tx , transaction_tree.clone());
+        }
+    }
+}
+
 
 fn main() -> Result<()> {
     let json_data = r#"
@@ -116,6 +129,16 @@ fn main() -> Result<()> {
           "issued_at": "2023-08-18T08:24:18.143468881Z",
           "expiry_at": "2023-08-15T08:24:18.143469914Z",
           "tx_hash": "0x3691d3e458c48b41b25e929917491885c1455dd762125a1fead0104a042fd857fb86254057778dadc48d50e61aecfeff4b1d9dd2d6e8b63883cc2680b17ec2ab",
+          "signed_tx_hash": "0xd0eecd71aff0f28e68159f3ce18134c63c320a519642e9938612fcf7c6a0ce1d8bbda0aca0111ef29d3c1403186f7619534e529e8c5f7d86a52f5a15511e5a8c"
+        },
+        {
+          "previous_tx_hash": "0xf697f777b5fe9ac8b405c683f46b0ba650ee63b63a4f2913aaf973dea77dc6a8ac1ce2bad13b836b151f949f83d3e211c3f4a6fb2b95f267e27578eb12bc6587",
+          "amount": 2000,
+          "from_did": "0x6469643a737369643a616c696365000000000000000000000000000000000000",
+          "to_did": "0x6469643a737369643a626f620000000000000000000000000000000000000000",
+          "issued_at": "2023-08-18T08:24:18.143468881Z",
+          "expiry_at": "2023-08-15T08:24:18.143469914Z",
+          "tx_hash": "0x3691d3e458c48b41b25e929917491885c1455dd762125a1fead0104a042fd857fb86254057778dadc48d50e61aecfeff4b1d9dd2d6e8b63883cc2680000",
           "signed_tx_hash": "0xd0eecd71aff0f28e68159f3ce18134c63c320a519642e9938612fcf7c6a0ce1d8bbda0aca0111ef29d3c1403186f7619534e529e8c5f7d86a52f5a15511e5a8c"
         },
         {
@@ -145,8 +168,6 @@ fn main() -> Result<()> {
     let (root_node, transaction_tree) = build_transaction_tree(transactions.clone());
     println!("{:#?}", transaction_tree);
 
-    let node_key = Some(root_node);
-
-
+    iterate_transactions_tree(root_node, transaction_tree);
     Ok(())
 }
