@@ -169,5 +169,6 @@ fn main() -> Result<()> {
     println!("{:#?}", transaction_tree);
 
     iterate_transactions_tree(root_node, transaction_tree);
+    
     Ok(())
 }
