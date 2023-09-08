@@ -23,14 +23,14 @@ impl Page for HomePage {
         println!("----------------------------- EPICS -----------------------------");
         println!("     id     |               name               |      status      ");
 
-        // TODO: print out epics using get_column_string(). also make sure the epics are sorted by id
         let epics = self.db.read_db()?.epics;
+
         for id in epics.keys().sorted() {
             let epic = &epics[id];
-            let id = get_column_string(&id.to_string(), 11);
-            let name = get_column_string(&epic.name.to_string(), 32);
-            let status = get_column_string(&epic.status.to_string(), 17);
-            println!("{} | {} | {}", id, name, status);
+            let id_col = get_column_string(&id.to_string(), 11);
+            let name_col = get_column_string(&epic.name, 32);
+            let status_col = get_column_string(&epic.status.to_string(), 17);
+            println!("{} | {} | {}", id_col, name_col, status_col);
         }
 
         println!();
@@ -72,14 +72,12 @@ impl Page for EpicDetail {
         println!("------------------------------ EPIC ------------------------------");
         println!("  id  |     name     |         description         |    status    ");
 
-
         let id_col = get_column_string(&self.epic_id.to_string(), 5);
         let name_col = get_column_string(&epic.name, 12);
         let desc_col = get_column_string(&epic.description, 27);
         let status_col = get_column_string(&epic.status.to_string(), 13);
-    
         println!("{} | {} | {} | {}", id_col, name_col, desc_col, status_col);
-  
+
         println!();
 
         println!("---------------------------- STORIES ----------------------------");
@@ -87,11 +85,13 @@ impl Page for EpicDetail {
 
         let stories = &db_state.stories;
 
-        let id_col = get_column_string(&self.epic_id.to_string(), 5);
-        let name_col = get_column_string(&epic.name, 12);
-        let desc_col = get_column_string(&epic.description, 27);
-        let status_col = get_column_string(&epic.status.to_string(), 13);
-        println!("{} | {} | {} | {}", id_col, name_col, desc_col, status_col);
+        for id in epic.stories.iter().sorted() {
+            let story = &stories[id];
+            let id_col = get_column_string(&id.to_string(), 11);
+            let name_col = get_column_string(&story.name, 32);
+            let status_col = get_column_string(&story.status.to_string(), 17);
+            println!("{} | {} | {}", id_col, name_col, status_col);
+        }
 
         println!();
         println!();
@@ -184,7 +184,7 @@ mod tests {
 
             let page = HomePage { db };
             assert_eq!(page.handle_input("").is_ok(), true);
-        }
+        } 
 
         #[test]
         fn handle_input_should_return_the_correct_actions() {
@@ -211,7 +211,7 @@ mod tests {
             assert_eq!(page.handle_input(junk_input).unwrap(), None);
             assert_eq!(page.handle_input(junk_input_with_valid_prefix).unwrap(), None);
             assert_eq!(page.handle_input(input_with_trailing_white_spaces).unwrap(), None);
-        }
+        } 
     }
 
     mod epic_detail_page {
