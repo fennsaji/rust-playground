@@ -45,3 +45,43 @@ Database, storage and persistence are often used interchangeably. They represent
 __CRUD & DAO__
 
 CRUD stands for actions of creation, read, update & deletion. DAO stands for data access object and is an interface in the application to perform these actions against the database.
+
+
+## Running
+
+__Docker__
+
+1. [Install Docker](https://www.docker.com/)
+2. Install the [Postgres image](https://hub.docker.com/_/postgres) by running `docker pull postgres` in your terminal
+3. Start a Postgres instance by running:
+    ```shell
+    $ docker run --name stack-overflow-db -e POSTGRES_PASSWORD=postgrespw -p 55008:5432 -d postgres
+    ```
+
+__Migrations__
+
+First, install [sqlx-cli](https://github.com/launchbadge/sqlx/tree/main/sqlx-cli). This is SQLx's associated command-line utility for managing databases, migrations, and more:
+```shell
+$ cargo install sqlx-cli
+```
+
+Now you can execute migrations by running:
+```shell
+$ sqlx migrate run
+```
+
+__NOTE:__ If you ever want to revert the migrations, simply run:
+```shell
+$ sqlx migrate revert
+```
+
+__Persistence__
+
+Now that Postgres is installed and our database tables are setup, let's query our database from `main.rs`!
+
+Do this by completing the TODO items in `main.rs`.
+
+Then run the server using `cargo run` or cargo watch:
+```shell
+$ cargo watch -q -c -w src/ -x run
+```
