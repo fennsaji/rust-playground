@@ -23,7 +23,7 @@ impl AnswersDaoImpl {
 #[async_trait]
 impl AnswersDao for AnswersDaoImpl {
     async fn create_answer(&self, answer: Answer) -> Result<AnswerDetail, DBError> {
-        let uuid: sqlx::types::Uuid = sqlx::types::Uuid::parse_str(&answer.question_uuid).map_err(|_| {
+        let uuid = sqlx::types::Uuid::parse_str(&answer.question_uuid).map_err(|_| {
             DBError::InvalidUUID(format!(
                 "Could not parse answer UUID: {}",
                 answer.question_uuid
