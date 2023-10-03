@@ -28,16 +28,6 @@ async fn rocket() -> _ {
         .connect(&std::env::var("DATABASE_URL").expect("DATABASE_URL must be set."))
         .await
         .expect("Failed to create Postgres connection pool!");
-    
-    // TODO: Delete this query
-    let recs = sqlx::query!("SELECT * FROM questions")
-            .fetch_all(&pool)
-            .await
-            .unwrap();
-
-    // TODO: Delete these log statements
-    info!("********* Question Records *********");
-    info!("{:?}", recs);
 
     rocket::build()
         .mount(
