@@ -2,7 +2,7 @@ use std::thread;
 use std::time::Duration;
 use tokio::time::sleep;
 use tokio::try_join;
-
+use std::future::{Future, Ready};
 
 async fn task1() {
     // Simulating some asynchronous work
@@ -48,7 +48,7 @@ async fn main() {
     let handle1 = tokio::spawn(task1());
     let handle2 = tokio::spawn(task2());
     let handle3 = tokio::spawn(task3());
-    let handle4 = tokio::spawn(sync_task_future(task4));
+    let handle4 = tokio::spawn(async_function(task4));
 
     // Using `try_join` to wait for both tasks to complete
     let result = try_join!(
@@ -65,4 +65,14 @@ async fn main() {
     if let Err(e) = result {
         eprintln!("Error: {:?}", e);
     }
+}
+
+
+// Wrapping synchronous function with a future
+fn async_function<T, F>(task: F) -> impl Future<>
+where
+    F: FnOnce() -> T + Send + 'static,
+{
+    // Create a future that immediately resolves with the result of the synchronous function
+    std::future::ready(task)
 }
